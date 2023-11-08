@@ -93,6 +93,7 @@ func main() {
 
 			selectedProduct := productsList[productChoice-1]
 			cart = append(cart, patterns.CartItem{Name: selectedProduct.GetName(), Price: selectedProduct.GetPrice()})
+			observers[0].Update(selectedProduct.GetName(), selectedProduct.GetPrice())
 
 		} else if buyChoice == 2 {
 			// User wants to proceed to payment
