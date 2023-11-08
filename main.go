@@ -136,5 +136,3 @@ func main() {
 	}
 
 }
-
-// CartObserver is an observer for the cart
