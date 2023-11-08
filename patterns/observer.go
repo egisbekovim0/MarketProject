@@ -1,8 +1,11 @@
 package patterns
 
+import "fmt"
+
 type Observer interface {
 	Update(productName string, productPrice float64)
 }
+type CartObserver struct{}
 
 // Cart is the subject being observed
 type Cart struct {
@@ -33,4 +36,9 @@ func (c *Cart) AddProduct(productName string, productPrice float64) {
 	for _, observer := range c.Observers {
 		observer.Update(productName, productPrice)
 	}
+}
+
+// Update notifies the observer about the selected product
+func (co *CartObserver) Update(productName string, productPrice float64) {
+	fmt.Printf("Added %s - $%.2f to the cart.\n", productName, productPrice)
 }

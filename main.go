@@ -47,6 +47,7 @@ func main() {
 		return
 	}
 
+	cartObserver := patterns.CartObserver{}
 	cart := []patterns.CartItem{}
 	cashPaymentStrategy := &patterns.CashPaymentStrategy{}
 	cardPaymentStrategy := &patterns.CardPaymentStrategy{}
@@ -54,7 +55,7 @@ func main() {
 	funds := patterns.GetFundsInstance()
 	availableFunds := funds.Amount
 
-	observers := []patterns.Observer{&CartObserver{}}
+	observers := []patterns.Observer{&cartObserver}
 
 	fmt.Printf("You have $%.2f in available funds.\n", availableFunds)
 
@@ -137,9 +138,3 @@ func main() {
 }
 
 // CartObserver is an observer for the cart
-type CartObserver struct{}
-
-// Update notifies the observer about the selected product
-func (co *CartObserver) Update(productName string, productPrice float64) {
-	fmt.Printf("Added %s - $%.2f to the cart.\n", productName, productPrice)
-}
