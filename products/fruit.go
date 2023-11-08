@@ -13,18 +13,15 @@ func (ff FruitFactory) CreateProducts() []Product {
 	}
 }
 
-// Fruit represents a fruit product
 type Fruit struct {
 	Name  string
 	Price float64
 }
 
-// GetName returns the name of the fruit product
 func (f *Fruit) GetName() string {
 	return f.Name
 }
 
-// GetPrice returns the price of the fruit product
 func (f *Fruit) GetPrice() float64 {
 	return f.Price
 }

@@ -33,7 +33,6 @@ func main() {
 
 	productsList := productFactory.CreateProducts()
 
-	//fmt.Printf("Choose a %s product:\n", categoryName)
 	for i, product := range productsList {
 		fmt.Printf("%d. %s - $%.2f\n", i+1, product.GetName(), product.GetPrice())
 	}
@@ -90,10 +89,9 @@ func main() {
 		fmt.Scanln(&buyChoice)
 
 		if buyChoice == 1 {
-			// User wants to buy another product
+
 			fmt.Println("Choose another product:")
-			// Repeat the product selection logic and add the selected product to the cart
-			// Use the same logic you've already written for product selection and adding to the cart
+
 			productsList := productFactory.CreateProducts()
 			for i, product := range productsList {
 				fmt.Printf("%d. %s - $%.2f\n", i+1, product.GetName(), product.GetPrice())
@@ -113,9 +111,6 @@ func main() {
 			observers[0].Update(selectedProduct.GetName(), selectedProduct.GetPrice())
 
 		} else if buyChoice == 2 {
-			// User wants to proceed to payment
-
-			// Proceed to payment logic (use the existing payment logic)
 
 			total := 0.0
 			for _, item := range cart {
@@ -163,7 +158,6 @@ func main() {
 				return
 			}
 
-			// After payment, you can exit the loop
 			break
 
 		} else {
