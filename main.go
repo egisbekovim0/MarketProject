@@ -71,6 +71,19 @@ func main() {
 	cart = append(cart, cartItem)
 	observers[0].Update(selectedProduct.GetName(), selectedProduct.GetPrice())
 
+	var couponCode string
+	fmt.Print("Enter a coupon code (or leave it empty for no discount): ")
+	fmt.Scanln(&couponCode)
+
+	var discountStrategy patterns.DiscountStrategy
+
+	if couponCode != "" {
+		discountStrategy = patterns.NewCouponDiscountStrategy(couponCode)
+	} else {
+		// No discount strategy
+		discountStrategy = &patterns.NoDiscountStrategy{}
+	}
+
 	for {
 		var buyChoice int
 		fmt.Println("Do you want to buy another one? 1 = yes, 2 = no")
@@ -103,10 +116,13 @@ func main() {
 			// User wants to proceed to payment
 
 			// Proceed to payment logic (use the existing payment logic)
+
 			total := 0.0
 			for _, item := range cart {
 				total += item.Price
 			}
+
+			total = discountStrategy.ApplyDiscount(total)
 
 			paymentChoice := 0
 			fmt.Printf("Select a payment method:\n1. Cash\n2. Card\nEnter your choice: ")
@@ -129,6 +145,7 @@ func main() {
 					fmt.Println("Payment successful. Enjoy your purchase!")
 					funds.Amount -= total
 					fmt.Printf("Remaining cash funds: $%.2f\n", funds.Amount)
+					fmt.Printf("Remaining card funds: $%.2f\n", fundsCard.Amount)
 				} else {
 					fmt.Println("Insufficient cash funds. Payment failed.")
 				}
@@ -136,6 +153,7 @@ func main() {
 				if paymentStrategy.Pay(total, availableFundsCard) {
 					fmt.Println("Payment successful. Enjoy your purchase!")
 					fundsCard.Amount -= total
+					fmt.Printf("Remaining cash funds: $%.2f\n", funds.Amount)
 					fmt.Printf("Remaining card funds: $%.2f\n", fundsCard.Amount)
 				} else {
 					fmt.Println("Insufficient card funds. Payment failed.")
