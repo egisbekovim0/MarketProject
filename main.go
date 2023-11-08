@@ -55,10 +55,13 @@ func main() {
 	funds := patterns.GetFundsInstance()
 	availableFunds := funds.Amount
 
+	fundsCard := patterns.GetFundsCardInstance()
+	availableFundsCard := fundsCard.Amount
+
 	observers := []patterns.Observer{&cartObserver}
 
-	fmt.Printf("You have $%.2f in available funds.\n", availableFunds)
-
+	fmt.Printf("You have $%.2f in available cash funds.\n", availableFunds)
+	fmt.Printf("You have $%.2f in available card funds.\n", availableFundsCard)
 	selectedProduct := productsList[productChoice-1]
 
 	cartItem := patterns.CartItem{
@@ -120,13 +123,28 @@ func main() {
 				return
 			}
 
-			if paymentStrategy.Pay(total, availableFunds) {
-				fmt.Println("Payment successful. Enjoy your purchase!")
-				funds.Amount -= total
-				fmt.Printf("Remaining funds: $%.2f\n", funds.Amount)
-			} else {
-				fmt.Println("Insufficient funds. Payment failed.")
+			switch paymentChoice {
+			case 1:
+				if paymentStrategy.Pay(total, availableFunds) {
+					fmt.Println("Payment successful. Enjoy your purchase!")
+					funds.Amount -= total
+					fmt.Printf("Remaining cash funds: $%.2f\n", funds.Amount)
+				} else {
+					fmt.Println("Insufficient cash funds. Payment failed.")
+				}
+			case 2:
+				if paymentStrategy.Pay(total, availableFundsCard) {
+					fmt.Println("Payment successful. Enjoy your purchase!")
+					fundsCard.Amount -= total
+					fmt.Printf("Remaining card funds: $%.2f\n", fundsCard.Amount)
+				} else {
+					fmt.Println("Insufficient card funds. Payment failed.")
+				}
+			default:
+				fmt.Println("Invalid payment choice")
+				return
 			}
+
 			// After payment, you can exit the loop
 			break
 
